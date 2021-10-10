@@ -1,0 +1,15 @@
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\bin\Debug\net5.0\Viksa.Fx.FixerClient.deps.json
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\bin\Debug\net5.0\Viksa.Fx.FixerClient.dll
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\bin\Debug\net5.0\ref\Viksa.Fx.FixerClient.dll
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\bin\Debug\net5.0\Viksa.Fx.FixerClient.pdb
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\bin\Debug\net5.0\Viksa.Fx.Providers.dll
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\bin\Debug\net5.0\Viksa.Fx.Providers.pdb
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\obj\Debug\net5.0\Viksa.Fx.FixerClient.csproj.AssemblyReference.cache
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\obj\Debug\net5.0\Viksa.Fx.FixerClient.GeneratedMSBuildEditorConfig.editorconfig
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\obj\Debug\net5.0\Viksa.Fx.FixerClient.AssemblyInfoInputs.cache
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\obj\Debug\net5.0\Viksa.Fx.FixerClient.AssemblyInfo.cs
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\obj\Debug\net5.0\Viksa.Fx.FixerClient.csproj.CoreCompileInputs.cache
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\obj\Debug\net5.0\Viksa.Fx.FixerClient.csproj.CopyComplete
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\obj\Debug\net5.0\Viksa.Fx.FixerClient.dll
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\obj\Debug\net5.0\ref\Viksa.Fx.FixerClient.dll
+C:\Coding\GitHub\Viksa.Fx\Viksa.Fx.FixerClient\obj\Debug\net5.0\Viksa.Fx.FixerClient.pdb
