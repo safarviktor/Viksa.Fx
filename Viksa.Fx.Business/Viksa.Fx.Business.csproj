@@ -9,7 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Viksa.Fx.DataAccess\Viksa.Fx.DataAccess.csproj" />
     <ProjectReference Include="..\Viksa.Fx.FixerClient\Viksa.Fx.FixerClient.csproj" />
+    <ProjectReference Include="..\Viksa.Fx.Models\Viksa.Fx.Models.csproj" />
     <ProjectReference Include="..\Viksa.Fx.Providers\Viksa.Fx.Providers.csproj" />
   </ItemGroup>
 

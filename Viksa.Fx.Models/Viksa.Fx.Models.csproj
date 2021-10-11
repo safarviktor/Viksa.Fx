@@ -4,8 +4,4 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Viksa.Fx.Models\Viksa.Fx.Models.csproj" />
-  </ItemGroup>
-
 </Project>

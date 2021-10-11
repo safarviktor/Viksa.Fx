@@ -7,6 +7,8 @@ namespace Viksa.Fx.Business.Setup
         public static void InstallServices(IServiceCollection services)
         {
             Viksa.Fx.FixerClient.Installer.InstallServices(services);
+            Viksa.Fx.DataAccess.Installer.InstallServices(services);
+
             services.AddTransient<IFxBusiness, Implementations.FxBusiness>();            
         }
     }

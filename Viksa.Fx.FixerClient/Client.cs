@@ -2,6 +2,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Viksa.Fx.Models;
 using Viksa.Fx.Providers;
 
 namespace Viksa.Fx.FixerClient
@@ -18,17 +19,33 @@ namespace Viksa.Fx.FixerClient
         public async Task<decimal> GetFxRate(string fromCurrency, string toCurrency, DateTime date)
         {
             var jsonResult = await GetClient().GetStringAsync($"{date.ToString("yyyy-MM-dd")}?{AccessKeySyntax}&{Base}={fromCurrency}&{Symbols}={toCurrency}");
-            var result = JsonConvert.DeserializeObject<GetRatesResponse>(jsonResult);
-            return result.Rates.ContainsKey(toCurrency) ? result.Rates[toCurrency] : 0;
+            var response = JsonConvert.DeserializeObject<GetRatesResponse>(jsonResult);
+            return response.Rates.ContainsKey(toCurrency) ? response.Rates[toCurrency] : 0;
         }
 
         public async Task<decimal> GetLatestFxRate(string fromCurrency, string toCurrency)
         {
             var jsonResult = await GetClient().GetStringAsync($"latest?{AccessKeySyntax}&{Base}={fromCurrency}&{Symbols}={toCurrency}");
-            var result = JsonConvert.DeserializeObject<GetRatesResponse>(jsonResult);
-            return result.Rates.ContainsKey(toCurrency) ? result.Rates[toCurrency] : 0;
+            var response = JsonConvert.DeserializeObject<GetRatesResponse>(jsonResult);
+            return response.Rates.ContainsKey(toCurrency) ? response.Rates[toCurrency] : 0;
         }
-        
+
+        public async Task<RatesByDate> GetLatestAll()
+        {
+            var jsonResult = await GetClient().GetStringAsync($"latest?{AccessKeySyntax}");
+            var response = JsonConvert.DeserializeObject<GetRatesResponse>(jsonResult);
+
+            // could use auto mapper
+            var result = new RatesByDate()
+            {
+                Date = response.Date,
+                FromCurrency = response.Base,
+                Rates = response.Rates
+            };
+
+            return result;
+        }
+
         private HttpClient GetClient()
         {
             var client = HttpClientFactory.Create();
