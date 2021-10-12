@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Viksa.Fx.DataAccess;
 using Viksa.Fx.Providers;
 using System.Linq;
+using System.Collections.Generic;
+using Viksa.Fx.Models;
 
 namespace Viksa.Fx.Business.Implementations
 {
@@ -37,6 +39,11 @@ namespace Viksa.Fx.Business.Implementations
         {
             var latest = await _fxProvider.GetLatestAll();            
             await _fxRatesRepository.Add(latest);
+        }
+
+        public Task<RateHistory> GetRateHistory(string fromCurrency, string toCurrency, DateTime fromDate, DateTime toDate)
+        {
+            return _fxRatesRepository.GetRateHistory(fromCurrency, toCurrency, fromDate, toDate);
         }
     }
 }

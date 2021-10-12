@@ -26,7 +26,9 @@ CREATE TABLE dbo.CurrencyRate
 	DateTimeCreated DATETIME NOT NULL
 		CONSTRAINT DF_CurrencyRate_DateTimeCreated DEFAULT GETDATE(),
 	DateTimeUpdated DATETIME NOT NULL
-		CONSTRAINT DF_CurrencyRate_DateTimeUpdated DEFAULT GETDATE()
+		CONSTRAINT DF_CurrencyRate_DateTimeUpdated DEFAULT GETDATE(),
+
+	CONSTRAINT UQ_RateByDate UNIQUE (FromCurrencyId, ToCurrencyId, AsAt)
 )
 
 

@@ -1,6 +1,8 @@
 ﻿using Dapper;
+using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Viksa.Fx.Models;
 
@@ -25,6 +27,33 @@ namespace Viksa.Fx.DataAccess.Implementations
             @params.Add("Rates", ratesTable.AsTableValuedParameter("dbo.KeyValuePairChar3Decimal"));
 
             return WithConnection(c => c.ExecuteAsync("dbo.spAddCurrencyRates", @params, commandType: System.Data.CommandType.StoredProcedure));                
+        }
+
+        public Task<RateHistory> GetRateHistory(string fromCurrency, string toCurrency, DateTime fromDate, DateTime toDate)
+        {
+            var sql = $@"
+                DECLARE @fromId INT = (SELECT Id FROM dbo.Currency WHERE CurrencyCode = @{nameof(fromCurrency)})
+                DECLARE @toId INT = (SELECT Id FROM dbo.Currency WHERE CurrencyCode = @{nameof(toCurrency)})
+
+                SELECT 
+	                AsAt,
+	                Rate
+                FROM dbo.CurrencyRate
+                WHERE FromCurrencyId = @fromId
+                AND ToCurrencyId = @toId
+                AND AsAt BETWEEN @{nameof(fromDate)} AND @{nameof(toDate)} ";
+
+            return WithConnection(async c =>
+            {
+                var dbRates = await c.QueryAsync<dynamic>(sql, new { fromCurrency, toCurrency, fromDate, toDate });
+
+                return new RateHistory()
+                {
+                    FromCurrency = fromCurrency,
+                    ToCurrency = toCurrency,
+                    Rates = dbRates.ToDictionary(r => (DateTime)r.AsAt, r => (decimal)r.Rate)
+                };
+            });
         }
     }
 }
