@@ -75,11 +75,12 @@ Date.prototype.addDays = function(days) {
     return date;
 }
 
-
 var today = new Date();
 var threeDaysAgo = new Date(today.addDays(-3));
 var fromDate = $("#fromDate").val(threeDaysAgo.toDateInputValue());		
 var toDate = $("#toDate").val(today.toDateInputValue());		
+
+
 
 function drawHistory()
 {
@@ -92,22 +93,24 @@ function drawHistory()
 	$.get(url)
 		.done(function(apiResult) {
 			console.log(apiResult);
-				
+			
+			const orderedRates = apiResult.rates.sort(function(a, b) { return new Date(a.date) - new Date(b.date) });
+			
+			const labels = orderedRates.map(r => `${(new Date(r.date)).getDate()}.${(new Date(r.date)).getMonth()}.`);
+			const data = {
+			  labels: labels,
+			  datasets: [{
+				label: `${apiResult.fromCurrency} - ${apiResult.toCurrency}`,
+				data: orderedRates.map(r => r.rate),
+				fill: false,
+				borderColor: 'rgb(75, 192, 192)',
+				tension: 0.1
+			  }]
+			};
+			
 			new Chart("rateHistoryCanvas", {
 				type: "line",
-				data: {
-					datasets: [{
-						data: apiResult.rates
-					}]
-				},
-				options: {
-					legend: {display: false},
-					scales: {
-						x: {
-							type: 'timeseries'
-						}
-					}
-				}
+				data: data
 			});
 			
 		})
