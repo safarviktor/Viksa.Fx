@@ -12,4 +12,6 @@ Some features require the `Fixer.io` hookup. Update the `ApiKey` in `Viksa.Fx.Fi
 
 ### Demo website
 
+The "Website.html" is the demo page. It requires the `Viksa.Fx.Api` app to be running.
+
 To get a reasonable number of data points to show on the graph, the 002 SQL script was created. It is dependent on having at least one set of rates in the database - so it is best to run the 002 script after the "daily" import has been run at least once.
