@@ -9,7 +9,7 @@ namespace Viksa.Fx.FixerClient
 {
     public class Client : IFxProvider
     {
-        private const string ApiKey = "b157254cc88a3b02dfa1bd3314b0a906";        
+        private const string ApiKey = "";        
         private const string ApiBaseUrl = "http://data.fixer.io/api/";
         private const string Base = "base";
         private const string Symbols = "symbols";

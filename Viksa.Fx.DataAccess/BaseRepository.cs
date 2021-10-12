@@ -12,12 +12,6 @@ namespace Viksa.Fx.DataAccess
 	{
 		private const string _ConnectionString = "Server=.;Database=coding;Trusted_Connection=True;";
 
-		//protected DataTable GetDataTable<T>(IEnumerable<T> data) where T : new()
-  //      {
-
-  //      }
-
-		// use for buffered queries that return a type
 		protected async Task<T> WithConnection<T>(Func<IDbConnection, Task<T>> getData)
 		{
 			using (var connection = new SqlConnection(_ConnectionString))
@@ -27,7 +21,6 @@ namespace Viksa.Fx.DataAccess
 				}			
 		}
 
-		// use for buffered queries that do not return a type
 		protected async Task WithConnection(Func<IDbConnection, Task> getData)
 		{
 			try
@@ -48,7 +41,6 @@ namespace Viksa.Fx.DataAccess
 			}
 		}
 
-		// use for non-buffered queries that return a type
 		protected async Task<TResult> WithConnection<TRead, TResult>(Func<IDbConnection, Task<TRead>> getData, Func<TRead, Task<TResult>> process)
 		{
 			try

@@ -1,5 +1,5 @@
 select * from dbo.Currency
-select * from dbo.CurrencyRate 
+select * from dbo.CurrencyRate where tocurrencyid = 2
 
 -- ASUMPTION: we have ONLY 1 set of rates for @dateForWhichWeHaveRates
 -- following on that assumption, we delete all rates apart those for @dateForWhichWeHaveRates before we run the inserts
@@ -8,21 +8,17 @@ select * from dbo.CurrencyRate
 declare @dateForWhichWeHaveRates DATE = GETDATE()
 delete dbo.CurrencyRate where asat <> @dateForWhichWeHaveRates
 
-insert into dbo.CurrencyRate
-(FromCurrencyId, ToCurrencyId, Rate, AsAt)
-select FromCurrencyId, ToCurrencyId, Rate*0.95, dateadd(day, -1, AsAt)
-from dbo.CurrencyRate
-where asat = @dateForWhichWeHaveRates
+DECLARE @daysBack int = -1
+DECLARE @randomMultiplier DECIMAL(18,8)
+WHILE @daysBack > -100
+BEGIN
+	SET @randomMultiplier = RAND()*(1.2-0.9)+0.9;
 
-insert into dbo.CurrencyRate
-(FromCurrencyId, ToCurrencyId, Rate, AsAt)
-select FromCurrencyId, ToCurrencyId, Rate*0.99, dateadd(day, -2, AsAt)
-from dbo.CurrencyRate
-where asat = @dateForWhichWeHaveRates
+	insert into dbo.CurrencyRate
+	(FromCurrencyId, ToCurrencyId, Rate, AsAt)
+	select FromCurrencyId, ToCurrencyId, Rate*@randomMultiplier, dateadd(day, @daysBack, AsAt)
+	from dbo.CurrencyRate
+	where asat = @dateForWhichWeHaveRates
 
-insert into dbo.CurrencyRate
-(FromCurrencyId, ToCurrencyId, Rate, AsAt)
-select FromCurrencyId, ToCurrencyId, Rate*1.03, dateadd(day, -3, AsAt)
-from dbo.CurrencyRate
-where asat = @dateForWhichWeHaveRates
-
+	SET @daysBack = @daysBack - 1
+END
