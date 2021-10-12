@@ -1,5 +1,5 @@
 
--- ASUMPTION: we have ONLY 1 set of rates for @dateForWhichWeHaveRates
+-- ASUMPTION: we have AT LEAST 1 set of rates for @dateForWhichWeHaveRates (presumably imported via running the "daily" import app)
 -- following on that assumption, we delete all rates apart those for @dateForWhichWeHaveRates before we run the inserts
 
 
