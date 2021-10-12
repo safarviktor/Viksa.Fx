@@ -2,6 +2,7 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 
 <body>
@@ -10,34 +11,143 @@
 	Conversion
 </h2>
 
-Amount: <input type="number" id="fromAmount" name="fromAmount" value="20" /><br>
-In currency: <input type="text" id="fromCurrency" name="fromCurrency" value="EUR" /><br>
-Target currency: <input type="text" id="toCurrency" name="toCurrency" value="USD" /><br>
-Date: <input type="date" id="date" name="date" /><br>
-Amount in target currency: <span id="toAmount" name="toAmount"></span><br>
-
-
+Amount: <input type="number" id="fromAmount" name="fromAmount" value="20" /><br />
+In currency: <input type="text" id="fromCurrency" name="fromCurrency" value="EUR" disabled /><br />
+Target currency: <input type="text" id="toCurrency" name="toCurrency" value="USD" /><br />
+Date: <input type="date" id="date" name="date" /><br />
+Amount in target currency: <span id="toAmount" name="toAmount"></span><br />
+<br />
 <button onclick="calculate()">Calculate</button>
 
 <script type="text/javascript">
-	function calculate()
-	{
-		var fromAmount = $("#fromAmount").val();
-		var fromCurrency = $("#fromCurrency").val();
-		var toCurrency = $("#toCurrency").val();
-		var selectedDate = $("#date").val();
-		
-		var dateSuffix = selectedDate == "" ? "" : `?date=${selectedDate}`;		
-		var url = `http://localhost:37646/api/FxConversions/${fromCurrency}/${fromAmount}/${toCurrency}${dateSuffix}`;
-		
-		$.get(url)
-			.done(function(data) {
-				$("#toAmount").html(data);
-			})
-			.fail(function(jqXHR, textStatus, errorThrown) {
-				alert("Error. Status: " + textStatus + ". " + errorThrown);
+function calculate()
+{
+	var fromAmount = $("#fromAmount").val();
+	var fromCurrency = $("#fromCurrency").val();
+	var toCurrency = $("#toCurrency").val();
+	var selectedDate = $("#date").val();
+	
+	var dateSuffix = selectedDate == "" ? "" : `?date=${selectedDate}`;		
+	var url = `http://localhost:37646/api/FxConversions/${fromCurrency}/${fromAmount}/${toCurrency}${dateSuffix}`;
+	
+	$.get(url)
+		.done(function(data) {
+			$("#toAmount").html(data);
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			alert("Error. Status: " + textStatus + ". " + errorThrown);
+		});
+}
+</script>
+
+<hr />
+
+<h2>
+	Exchange rate history
+</h2>
+
+Base currency: <input type="text" id="fromCurrency" name="fromCurrency" value="EUR" disabled /><br />
+Show exchange rate history for: 
+<select id="toCurrency">
+	<option value="USD">USD</option>
+	<option value="AUD">AUD</option>
+	<option value="JPY">JPY</option>
+	<option value="NOK">NOK</option>
+</select><br />
+From: <input type="date" id="fromDate" name="fromDate" /><br />
+To: <input type="date" id="toDate" name="toDate" /><br />
+<br />
+<button onclick="drawHistory()">Show!</button><br />
+<br />
+
+<canvas id="rateHistoryCanvas" style="width:100%;max-width:700px"></canvas>
+
+<script>
+Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
+
+var today = new Date();
+var threeDaysAgo = new Date(today.addDays(-3));
+var fromDate = $("#fromDate").val(threeDaysAgo.toDateInputValue());		
+var toDate = $("#toDate").val(today.toDateInputValue());		
+
+function drawHistory()
+{
+	var fromCurrency = $("#fromCurrency").val();
+	var toCurrency = $("#toCurrency").val();		
+	var fromDate = $("#fromDate").val();		
+	var toDate = $("#toDate").val();		
+	var url = `http://localhost:37646/api/FxRates/${fromCurrency}/${toCurrency}/${fromDate}/${toDate}`;
+	
+	$.get(url)
+		.done(function(apiResult) {
+			console.log(apiResult);
+				
+			new Chart("rateHistoryCanvas", {
+				type: "line",
+				data: {
+					datasets: [{
+						data: apiResult.rates
+					}]
+				},
+				options: {
+					legend: {display: false},
+					scales: {
+						x: {
+							type: 'timeseries'
+						}
+					}
+				}
 			});
-	}
+			
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			alert("Error. Status: " + textStatus + ". " + errorThrown);
+		});
+}
+/*
+var xyValues = [
+  {x:50, y:7},
+  {x:60, y:8},
+  {x:70, y:8},
+  {x:80, y:9},
+  {x:90, y:9},
+  {x:100, y:9},
+  {x:110, y:10},
+  {x:120, y:11},
+  {x:130, y:14},
+  {x:140, y:14},
+  {x:150, y:15}
+];
+
+new Chart("rateHistoryCanvas", {
+  type: "scatter",
+  data: {
+    datasets: [{
+      pointRadius: 4,
+      pointBackgroundColor: "rgb(0,0,255)",
+      data: xyValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      xAxes: [{ticks: {min: 40, max:160}}],
+      yAxes: [{ticks: {min: 6, max:16}}],
+    }
+  }
+});
+*/
 </script>
 
 </body>

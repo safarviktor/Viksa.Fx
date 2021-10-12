@@ -10,6 +10,6 @@ namespace Viksa.Fx.Models
     {
         public string FromCurrency { get; set; }
         public string ToCurrency { get; set; }
-        public Dictionary<DateTime, decimal> Rates { get; set; }
+        public IEnumerable<RateWithDate> Rates { get; set; }
     }
 }

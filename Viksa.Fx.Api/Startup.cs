@@ -34,6 +34,7 @@ namespace Viksa.Fx.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Viksa.Fx.Api", Version = "v1" });
+                c.EnableAnnotations();
             });
 
             Business.Setup.Installer.InstallServices(services);

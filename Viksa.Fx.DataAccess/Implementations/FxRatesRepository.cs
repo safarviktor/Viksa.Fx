@@ -36,8 +36,8 @@ namespace Viksa.Fx.DataAccess.Implementations
                 DECLARE @toId INT = (SELECT Id FROM dbo.Currency WHERE CurrencyCode = @{nameof(toCurrency)})
 
                 SELECT 
-	                AsAt,
-	                Rate
+	                AsAt AS {nameof(RateWithDate.Date)},
+	                Rate AS {nameof(RateWithDate.Rate)}
                 FROM dbo.CurrencyRate
                 WHERE FromCurrencyId = @fromId
                 AND ToCurrencyId = @toId
@@ -45,13 +45,13 @@ namespace Viksa.Fx.DataAccess.Implementations
 
             return WithConnection(async c =>
             {
-                var dbRates = await c.QueryAsync<dynamic>(sql, new { fromCurrency, toCurrency, fromDate, toDate });
+                var dbRates = await c.QueryAsync<RateWithDate>(sql, new { fromCurrency, toCurrency, fromDate, toDate });
 
                 return new RateHistory()
                 {
                     FromCurrency = fromCurrency,
                     ToCurrency = toCurrency,
-                    Rates = dbRates.ToDictionary(r => (DateTime)r.AsAt, r => (decimal)r.Rate)
+                    Rates = dbRates
                 };
             });
         }
