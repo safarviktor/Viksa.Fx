@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Viksa.Fx.DataAccess;
 using Viksa.Fx.Providers;
+using System.Linq;
 
 namespace Viksa.Fx.Business.Implementations
 {
@@ -34,12 +35,7 @@ namespace Viksa.Fx.Business.Implementations
 
         public async Task SaveLatestRates()
         {
-            var latest = await _fxProvider.GetLatestAll();
-
-            // get existing currencies
-            // populate currencies we don't have
-            // inspect and adjust currency unit (BTC comes as 0.000000214544 but other comes as 2135132184.54318)
-
+            var latest = await _fxProvider.GetLatestAll();            
             await _fxRatesRepository.Add(latest);
         }
     }
