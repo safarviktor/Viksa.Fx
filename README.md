@@ -1,5 +1,3 @@
-# Viksa.Fx
-
 ## Prerequisities
 
 ### SQL backend
