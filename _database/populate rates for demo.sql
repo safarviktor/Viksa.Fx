@@ -1,5 +1,3 @@
-select * from dbo.Currency
-select * from dbo.CurrencyRate where tocurrencyid = 2
 
 -- ASUMPTION: we have ONLY 1 set of rates for @dateForWhichWeHaveRates
 -- following on that assumption, we delete all rates apart those for @dateForWhichWeHaveRates before we run the inserts
@@ -22,3 +20,5 @@ BEGIN
 
 	SET @daysBack = @daysBack - 1
 END
+
+select * from dbo.CurrencyRate where tocurrencyid = (select id from dbo.Currency where currencyCode = 'nok')
