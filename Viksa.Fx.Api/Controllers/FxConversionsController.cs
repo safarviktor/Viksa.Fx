@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using Viksa.Fx.Business;
 
@@ -15,9 +16,9 @@ namespace Viksa.Fx.Api.Controllers
 
         [Route("{fromCurrency}/{fromAmount}/{toCurrency}")]
         [HttpGet]
-        public async Task<IActionResult> Convert([FromRoute] string fromCurrency, [FromRoute] decimal fromAmount, [FromRoute] string toCurrency)
+        public async Task<IActionResult> Convert([FromRoute] string fromCurrency, [FromRoute] decimal fromAmount, [FromRoute] string toCurrency, [FromQuery] DateTime? date = null)
         {
-            var result = await _fxBusiness.GetToAmount(fromAmount, fromCurrency, toCurrency);
+            var result = await _fxBusiness.GetToAmount(fromAmount, fromCurrency, toCurrency, date);
             return Ok(result);
         }
     }

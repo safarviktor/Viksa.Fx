@@ -3,7 +3,7 @@
 namespace Viksa.Fx.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public abstract class AbstractController : ControllerBase
     {
     }
